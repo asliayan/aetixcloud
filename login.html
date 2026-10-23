@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — AetixCloud</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛏</text></svg>">
+</head>
+<body class="admin-body">
+  <div class="login-card">
+    <a href="index.html" class="logo" style="justify-content:center;margin-bottom:20px">
+      <span class="logo-icon">⛏</span><span class="logo-text">Aetix<span>Cloud</span></span>
+    </a>
+    <h2>Login</h2>
+    <p>Sign in to your account</p>
+    <div class="login-error" id="loginError"></div>
+    <form onsubmit="return handleLogin(event)">
+      <input type="email" id="loginEmail" placeholder="Email" required autocomplete="email">
+      <input type="password" id="loginPass" placeholder="Password" required autocomplete="current-password">
+      <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    <p style="margin-top:16px;font-size:13px;text-align:center"><a href="forgot.html" style="color:var(--green)">Forgot password?</a></p>
+    <p style="margin-top:10px;font-size:14px;color:var(--text-muted);text-align:center">
+      Don't have an account? <a href="register.html" style="color:var(--green)">Register</a>
+    </p>
+    <p style="margin-top:8px;font-size:13px;text-align:center"><a href="index.html" style="color:var(--text-muted)">← Back to Home</a></p>
+  </div>
+  <script>
+    function handleLogin(e) {
+      e.preventDefault();
+      var err = document.getElementById('loginError');
+      var email = document.getElementById('loginEmail').value.trim();
+      var pass = document.getElementById('loginPass').value;
+      var users = [];
+      try { users = JSON.parse(localStorage.getItem('aetix_users') || '[]'); } catch (x) {}
+      var user = users.find(function(u) { return u.email.toLowerCase() === email.toLowerCase() && u.password === pass; });
+      if (!user) {
+        err.style.display = 'block';
+        err.textContent = 'Invalid email or password';
+        return false;
+      }
+      localStorage.setItem('aetix_session', JSON.stringify({ id: user.id, name: user.name, email: user.email, referralCode: user.referralCode || '' }));
+      var redirect = localStorage.getItem('aetix_redirect') || 'dashboard.html';
+      localStorage.removeItem('aetix_redirect');
+      window.location.href = redirect;
+      return false;
+    }
+    try {
+      var s = localStorage.getItem('aetix_session');
+      if (s && JSON.parse(s)) window.location.href = 'dashboard.html';
+    } catch (x) {}
+  </script>
+</body>
+</html>

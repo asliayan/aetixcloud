@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart — AetixCloud</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛏</text></svg>">
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo"><span class="logo-icon">⛏</span><span class="logo-text">Aetix<span>Cloud</span></span></a>
+      <ul class="nav-links">
+        <li><a href="plans.html">Plans</a></li>
+        <li><a href="cart.html" class="active">Cart <span data-cart-count class="cart-badge">0</span></a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-outline btn-sm" data-auth="guest">Login</a>
+        <a href="dashboard.html" class="btn btn-primary btn-sm" data-auth="user" style="display:none">Dashboard</a>
+        <button class="mobile-toggle" id="mobileToggle">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <div class="container"><h1>Your Cart</h1><p>Review and checkout</p></div>
+  </div>
+
+  <div class="container cart-layout">
+    <div>
+      <div id="cartEmpty" class="cart-empty" style="display:none">
+        <div class="icon">🛒</div>
+        <p>Your cart is empty</p>
+        <a href="plans.html" class="btn btn-primary" style="margin-top:16px">Browse Plans</a>
+      </div>
+      <div id="cartContainer"></div>
+    </div>
+    <div class="cart-summary" id="cartSummary" style="display:none">
+      <h3>Summary</h3>
+      <div class="cart-summary-row"><span>Subtotal</span><span id="cartTotalAmount">৳0</span></div>
+      <div class="cart-summary-row" id="cartDiscountRow" style="display:none"><span>Discount</span><span id="cartDiscountAmount" style="color:var(--green)">-৳0</span></div>
+      <div class="cart-summary-total"><span>Total</span><span id="cartTotalAmount2" style="color:var(--green)">৳0</span></div>
+      <div style="margin-bottom:14px">
+        <input type="text" id="cartCouponInput" placeholder="Coupon code" style="width:100%;padding:11px 14px;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);outline:none;font-size:14px;margin-bottom:8px">
+        <button class="btn btn-outline btn-sm" type="button" onclick="applyCartCoupon()" style="width:100%">Apply Coupon</button>
+        <div id="cartCouponMsg" style="font-size:12.5px;margin-top:8px"></div>
+      </div>
+      <button class="btn btn-primary btn-block" onclick="openCheckout()">Checkout</button>
+      <a href="plans.html" class="btn btn-outline btn-block" style="margin-top:10px">Add more</a>
+    </div>
+  </div>
+
+  
+  <!-- Auth required modal -->
+  <div class="modal-overlay" id="authRequiredModal">
+    <div class="modal-box" style="text-align:center">
+      <button class="modal-close" onclick="closeAuthModal()">×</button>
+      <div style="font-size:40px;margin-bottom:12px">🔐</div>
+      <h2>Login Required</h2>
+      <p style="color:var(--text-muted);font-size:14px;margin:12px 0 24px;line-height:1.6">
+        Checkout করতে আগে <strong style="color:var(--text)">Register</strong> বা <strong style="color:var(--text)">Login</strong> করতে হবে।
+      </p>
+      <a href="register.html" class="btn btn-primary btn-block" style="margin-bottom:10px">Create Account (Register)</a>
+      <a href="login.html" class="btn btn-outline btn-block">Already have account? Login</a>
+    </div>
+  </div>
+
+  <!-- Payment Modal -->
+  <div class="modal-overlay" id="paymentModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closePayment()">×</button>
+      <div id="step1">
+        <h2>Select Payment Method</h2>
+        <div id="checkoutItems" style="margin-bottom:12px"></div>
+        <div style="font-size:14px;margin-bottom:8px">Total: ৳<strong id="checkoutFinal">0</strong></div>
+        <div id="discountDisplay" style="display:none;margin-bottom:8px;font-size:13px"></div>
+        <input type="text" id="couponInput" placeholder="Coupon code">
+        <button class="btn btn-outline btn-sm" onclick="applyCoupon()" style="margin-bottom:12px">Apply Coupon</button>
+        <div id="couponMsg" style="font-size:13px;margin-bottom:10px"></div>
+        <div class="method-list">
+          <button class="method-item" onclick="selectMethod('bKash')"><span class="method-name bkash-c">bKash (Send Money)</span><span>›</span></button>
+          <button class="method-item" onclick="selectMethod('Nagad')"><span class="method-name nagad-c">Nagad</span><span>›</span></button>
+          <button class="method-item" onclick="selectMethod('Rocket')"><span class="method-name rocket-c">Rocket</span><span>›</span></button>
+          <button class="method-item" onclick="startBkashCheckout()" style="border-color:#e2136e"><span class="method-name bkash-c">bKash Auto Checkout</span><span>›</span></button>
+        </div>
+      </div>
+      <div id="step2" style="display:none">
+        <h2>Pay via <span id="selectedMethodLabel">bKash</span></h2>
+        <p style="font-size:14px;color:var(--text-muted);margin-bottom:8px">Send money to this number:</p>
+        <div class="pay-num-box"><span id="modalPayNumber">01XXXXXXXXX</span><button class="btn btn-outline btn-sm" onclick="copyModalNumber()">Copy</button></div>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px">After payment, enter the Transaction ID below.</p>
+        <input type="text" id="txidInput" placeholder="Transaction ID (TxID)">
+        <div style="display:flex;gap:10px;margin-top:12px">
+          <button class="btn btn-outline" onclick="goStep1()">Back</button>
+          <button class="btn btn-primary" style="flex:1" onclick="submitPayment()">Submit Order</button>
+        </div>
+      </div>
+      <div id="step3" style="display:none;text-align:center">
+        <div style="font-size:48px;margin-bottom:12px">✅</div>
+        <h2>Order Submitted!</h2>
+        <p style="color:var(--text-muted);font-size:14px;margin:12px 0">Order ID: <strong id="successOrderId"></strong></p>
+        <p style="font-size:14px">Plans: <span id="successPlan"></span></p>
+        <p style="font-size:14px">Amount: ৳<span id="successAmount"></span></p>
+        <p style="font-size:13px;color:var(--text-muted);margin:16px 0">We'll verify and activate your server soon.</p>
+        <a href="dashboard.html" class="btn btn-primary">Go to Dashboard</a>
+        <button class="btn btn-outline" style="margin-left:8px" onclick="closePayment()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-bottom"><div class="container"><p>© 2026 AetixCloud.</p></div></div>
+  </footer>
+  <script src="config.js"></script>
+  <script src="services.js"></script>
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var t = document.getElementById('cartTotalAmount');
+      var t2 = document.getElementById('cartTotalAmount2');
+      if (t && t2) {
+        var obs = new MutationObserver(function() { t2.textContent = t.textContent; });
+        obs.observe(t, { childList: true, characterData: true, subtree: true });
+        t2.textContent = t.textContent;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Status — AetixCloud</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛏</text></svg>">
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo"><span class="logo-icon">⛏</span><span class="logo-text">Aetix<span>Cloud</span></span></a>
+      <ul class="nav-links">
+        <li><a href="plans.html">Plans</a></li>
+        <li><a href="status.html" class="active">Status</a></li>
+        <li><a href="cart.html">Cart <span data-cart-count class="cart-badge">0</span></a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-outline btn-sm" data-auth="guest">Login</a>
+        <button class="mobile-toggle" id="mobileToggle">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-hero"><div class="container"><h1>System Status</h1><p>All systems operational</p></div></div>
+
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="status-grid">
+        <div class="status-card"><h3><span class="dot"></span>Game Nodes</h3><p>Online · 99.9% uptime</p></div>
+        <div class="status-card"><h3><span class="dot"></span>Panel</h3><p>Online · Pterodactyl</p></div>
+        <div class="status-card"><h3><span class="dot"></span>Network</h3><p>Online · DDoS filtered</p></div>
+        <div class="status-card"><h3><span class="dot"></span>Billing</h3><p>Online · Orders processing</p></div>
+      </div>
+      <p style="text-align:center;margin-top:32px;color:var(--text-muted);font-size:14px">Last checked: just now · Status is simulated for demo</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-bottom"><div class="container"><p>© 2026 AetixCloud.</p></div></div>
+  </footer>
+  <script src="config.js"></script>
+  <script src="services.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

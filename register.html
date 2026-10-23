@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register — AetixCloud</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛏</text></svg>">
+</head>
+<body class="admin-body">
+  <div class="login-card">
+    <a href="index.html" class="logo" style="justify-content:center;margin-bottom:20px">
+      <span class="logo-icon">⛏</span><span class="logo-text">Aetix<span>Cloud</span></span>
+    </a>
+    <h2>Create Account</h2>
+    <p>Register to order servers</p>
+    <div class="login-error" id="regError"></div>
+    <form onsubmit="return handleRegister(event)">
+      <input type="text" id="regName" placeholder="Your Name" required autocomplete="name">
+      <input type="email" id="regEmail" placeholder="Email" required autocomplete="email">
+      <input type="password" id="regPass" placeholder="Password (min 4 chars)" required minlength="4" autocomplete="new-password">
+      <input type="text" id="regReferral" placeholder="Referral Code (optional)" autocomplete="off">
+      <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+    <p style="margin-top:16px;font-size:14px;color:var(--text-muted);text-align:center">
+      Already have an account? <a href="login.html" style="color:var(--green)">Login</a>
+    </p>
+    <p style="margin-top:8px;font-size:13px;text-align:center"><a href="index.html" style="color:var(--text-muted)">← Back to Home</a></p>
+  </div>
+  <script>
+    function handleRegister(e) {
+      e.preventDefault();
+      var err = document.getElementById('regError');
+      var name = document.getElementById('regName').value.trim();
+      var email = document.getElementById('regEmail').value.trim();
+      var pass = document.getElementById('regPass').value;
+      var ref = (document.getElementById('regReferral').value || '').trim();
+      if (!name || !email || !pass) { err.style.display = 'block'; err.textContent = 'Fill all required fields'; return false; }
+      if (pass.length < 4) { err.style.display = 'block'; err.textContent = 'Password min 4 characters'; return false; }
+      var users = [];
+      try { users = JSON.parse(localStorage.getItem('aetix_users') || '[]'); } catch (x) {}
+      if (users.some(function(u) { return u.email.toLowerCase() === email.toLowerCase(); })) {
+        err.style.display = 'block'; err.textContent = 'Email already registered'; return false;
+      }
+      var referredBy = null;
+      if (ref) {
+        var found = users.find(function(u) { return (u.referralCode || '').toUpperCase() === ref.toUpperCase(); });
+        if (found) referredBy = found.id;
+      }
+      var user = {
+        id: 'U' + Date.now(), name: name, email: email, password: pass,
+        referralCode: (name.substring(0, 3).toUpperCase() + Math.random().toString(36).substring(2, 6).toUpperCase()),
+        referredBy: referredBy, createdAt: new Date().toISOString()
+      };
+      users.push(user);
+      localStorage.setItem('aetix_users', JSON.stringify(users));
+      localStorage.setItem('aetix_session', JSON.stringify({ id: user.id, name: user.name, email: user.email, referralCode: user.referralCode }));
+      var redirect = localStorage.getItem('aetix_redirect') || 'dashboard.html';
+      localStorage.removeItem('aetix_redirect');
+      window.location.href = redirect;
+      return false;
+    }
+    try {
+      var s = localStorage.getItem('aetix_session');
+      if (s && JSON.parse(s)) window.location.href = 'dashboard.html';
+    } catch (x) {}
+  </script>
+</body>
+</html>

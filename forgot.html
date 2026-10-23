@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forgot Password — AetixCloud</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛏</text></svg>">
+</head>
+<body class="admin-body">
+  <div class="login-card">
+    <a href="index.html" class="logo" style="justify-content:center;margin-bottom:20px">
+      <span class="logo-icon">⛏</span><span class="logo-text">Aetix<span>Cloud</span></span>
+    </a>
+    <h2>Reset Password</h2>
+    <p>Enter email and new password</p>
+    <div class="login-error" id="forgotError"></div>
+    <div id="forgotSuccess" style="display:none;color:var(--green);font-size:13px;margin-bottom:12px"></div>
+    <form onsubmit="return handleForgot(event)">
+      <input type="email" id="forgotEmail" placeholder="Your Email" required>
+      <input type="password" id="forgotPass" placeholder="New Password (min 4)" required minlength="4">
+      <button type="submit" class="btn btn-primary">Reset Password</button>
+    </form>
+    <p style="margin-top:16px;font-size:14px;text-align:center"><a href="login.html" style="color:var(--green)">← Back to Login</a></p>
+  </div>
+  <script>
+    function handleForgot(e) {
+      e.preventDefault();
+      var err = document.getElementById('forgotError');
+      var ok = document.getElementById('forgotSuccess');
+      var email = document.getElementById('forgotEmail').value.trim();
+      var pass = document.getElementById('forgotPass').value;
+      var users = [];
+      try { users = JSON.parse(localStorage.getItem('aetix_users') || '[]'); } catch (x) {}
+      var idx = users.findIndex(function(u) { return u.email.toLowerCase() === email.toLowerCase(); });
+      if (idx === -1) { err.style.display = 'block'; ok.style.display = 'none'; err.textContent = 'Email not found'; return false; }
+      if (pass.length < 4) { err.style.display = 'block'; ok.style.display = 'none'; err.textContent = 'Password min 4 chars'; return false; }
+      users[idx].password = pass;
+      localStorage.setItem('aetix_users', JSON.stringify(users));
+      err.style.display = 'none';
+      ok.style.display = 'block';
+      ok.textContent = 'Password reset! You can login now.';
+      return false;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — AetixCloud</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛏</text></svg>">
+</head>
+<body class="admin-body" style="display:block;padding:0;align-items:stretch">
+  <div class="admin-login" id="adminLogin" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;margin:0 auto">
+    <div class="login-card">
+      <div class="logo" style="justify-content:center;margin-bottom:20px">
+        <span class="logo-icon">⛏</span><span class="logo-text">Aetix<span>Cloud</span></span>
+      </div>
+      <h2>Admin Panel</h2>
+      <p>Enter password to continue</p>
+      <div class="login-error" id="loginError">Wrong password!</div>
+      <form id="adminLoginForm">
+        <input type="password" id="adminPass" placeholder="Password" required>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+      <p style="margin-top:16px;font-size:12px;color:var(--text-muted);text-align:center">Default: <code>aetix2026</code></p>
+    </div>
+  </div>
+
+  <div class="admin-panel" id="adminPanel">
+    <header class="admin-header">
+      <div class="container" style="display:flex;align-items:center;justify-content:space-between">
+        <h1>⛏ AetixCloud Admin</h1>
+        <div style="display:flex;gap:10px">
+          <a href="index.html" class="btn btn-outline btn-sm">← Website</a>
+          <button class="btn btn-danger btn-sm" onclick="logoutAdmin()">Logout</button>
+        </div>
+      </div>
+    </header>
+    <div class="container" style="padding:24px 0 48px">
+      <div class="admin-stats">
+        <div class="stat-card"><div class="label">Total Orders</div><div class="value" id="statTotal">0</div></div>
+        <div class="stat-card"><div class="label">Pending</div><div class="value" id="statPending">0</div></div>
+        <div class="stat-card"><div class="label">Approved</div><div class="value" id="statApproved">0</div></div>
+        <div class="stat-card"><div class="label">Revenue</div><div class="value" id="statRevenue">৳0</div></div>
+      </div>
+
+      
+      <div style="background:rgba(255,184,77,0.1);border:1px solid rgba(255,184,77,0.3);border-radius:12px;padding:14px 16px;margin-bottom:20px;font-size:13.5px;color:var(--text-muted);line-height:1.55">
+        <strong style="color:var(--warning)">📌 Important:</strong>
+        Netlify deploy এর পর সব ইউজারের অর্ডার এখানে আসবে (shared server storage)।
+        যদি খালি দেখায় — একবার page refresh করো। Export/Import JSON ও কাজ করে।
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card"><h3>Monthly Revenue</h3><div class="chart-wrap"><canvas id="chartRevenue"></canvas></div></div>
+        <div class="chart-card"><h3>Order Status</h3><div class="chart-wrap"><canvas id="chartStatus"></canvas></div></div>
+        <div class="chart-card"><h3>Popular Plans</h3><div class="chart-wrap"><canvas id="chartPlans"></canvas></div></div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+        <h2 style="font-size:17px">Orders</h2>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-outline btn-sm" onclick="exportOrders()">Export JSON</button>
+          <label class="btn btn-outline btn-sm" style="cursor:pointer;margin:0">
+            Import JSON
+            <input type="file" accept=".json,application/json" style="display:none" onchange="if(this.files[0])importOrdersFromFile(this.files[0])">
+          </label>
+          <button class="btn btn-outline btn-sm" onclick="clearAllOrders()">Clear All</button>
+        </div>
+      </div>
+      <div id="emptyOrders" style="display:none;text-align:center;padding:40px;color:var(--text-muted)"><p>No orders yet.</p></div>
+      <div class="orders-table-wrap" id="ordersTableWrap">
+        <table class="orders-table">
+          <thead><tr><th>Order ID</th><th>Customer</th><th>Plan</th><th>Amount</th><th>Method</th><th>TxID</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody id="ordersBody"></tbody>
+        </table>
+      </div>
+
+      <h2 style="font-size:17px;margin:32px 0 14px">Users</h2>
+      <div class="orders-table-wrap">
+        <table class="orders-table">
+          <thead><tr><th>Name</th><th>Email</th><th>Referral</th><th>Joined</th><th>Orders</th></tr></thead>
+          <tbody id="usersBody"></tbody>
+        </table>
+      </div>
+
+      <h2 style="font-size:17px;margin:32px 0 14px">Support Tickets</h2>
+      <div id="adminTickets"></div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="services.js"></script>
+  <script src="script.js"></script>
+  <script>
+    var chartRevenue, chartStatus, chartPlans;
+    function renderAnalytics() {
+      if (typeof Chart === 'undefined' || typeof getOrders !== 'function') return;
+      var orders = getOrders();
+      var monthly = typeof getMonthlySales === 'function' ? getMonthlySales(orders) : { labels: [], data: [] };
+      var status = typeof getStatusBreakdown === 'function' ? getStatusBreakdown(orders) : { pending: 0, approved: 0, rejected: 0 };
+      var plans = typeof getPlanPopularity === 'function' ? getPlanPopularity(orders) : { labels: [], data: [] };
+      var green = '#3ddc84', muted = '#8aa894';
+      var ctx1 = document.getElementById('chartRevenue');
+      if (ctx1) {
+        if (chartRevenue) chartRevenue.destroy();
+        chartRevenue = new Chart(ctx1, {
+          type: 'line',
+          data: { labels: monthly.labels.length ? monthly.labels : ['No data'], datasets: [{ label: 'Revenue', data: monthly.data.length ? monthly.data : [0], borderColor: green, backgroundColor: 'rgba(61,220,132,0.15)', fill: true, tension: 0.3 }] },
+          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: muted }, grid: { color: 'rgba(255,255,255,0.05)' } }, y: { ticks: { color: muted }, grid: { color: 'rgba(255,255,255,0.05)' } } } }
+        });
+      }
+      var ctx2 = document.getElementById('chartStatus');
+      if (ctx2) {
+        if (chartStatus) chartStatus.destroy();
+        chartStatus = new Chart(ctx2, {
+          type: 'doughnut',
+          data: { labels: ['Pending', 'Approved', 'Rejected'], datasets: [{ data: [status.pending, status.approved, status.rejected], backgroundColor: ['#ffb84d', green, '#ff5c6c'] }] },
+          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: muted } } } }
+        });
+      }
+      var ctx3 = document.getElementById('chartPlans');
+      if (ctx3) {
+        if (chartPlans) chartPlans.destroy();
+        chartPlans = new Chart(ctx3, {
+          type: 'bar',
+          data: { labels: plans.labels.length ? plans.labels : ['No data'], datasets: [{ label: 'Orders', data: plans.data.length ? plans.data : [0], backgroundColor: green }] },
+          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: muted }, grid: { display: false } }, y: { ticks: { color: muted, stepSize: 1 }, grid: { color: 'rgba(255,255,255,0.05)' }, beginAtZero: true } } }
+        });
+      }
+    }
+  </script>
+</body>
+</html>

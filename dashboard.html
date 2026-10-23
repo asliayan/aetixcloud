@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — AetixCloud</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛏</text></svg>">
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo"><span class="logo-icon">⛏</span><span class="logo-text">Aetix<span>Cloud</span></span></a>
+      <ul class="nav-links">
+        <li><a href="plans.html">Plans</a></li>
+        <li><a href="cart.html">Cart <span data-cart-count class="cart-badge">0</span></a></li>
+        <li><a href="dashboard.html" class="active">Dashboard</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-btn" data-theme-btn onclick="toggleTheme()">☀️</button>
+        <button class="btn btn-outline btn-sm" onclick="logoutUser()">Logout</button>
+        <button class="mobile-toggle" id="mobileToggle">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <section class="dash-page">
+    <div class="container">
+      <div class="dash-header">
+        <div>
+          <h1>Welcome, <span data-dash-name>User</span></h1>
+          <p data-dash-email></p>
+        </div>
+        <a href="plans.html" class="btn btn-primary">Order New Server</a>
+      </div>
+
+      <div class="dash-cards">
+        <div class="dash-card"><div class="label">Your Orders</div><div class="value" id="dashOrderCount">0</div></div>
+        <div class="dash-card"><div class="label">Pending</div><div class="value" id="dashPending">0</div></div>
+        <div class="dash-card"><div class="label">Approved</div><div class="value" id="dashApproved">0</div></div>
+      </div>
+
+      <div class="referral-box">
+        <h3 style="font-size:15px;margin-bottom:4px">🎁 Your Referral Code</h3>
+        <p style="font-size:13px;color:var(--text-muted)">Share with friends — they can use it while registering</p>
+        <div class="referral-code">
+          <span id="referralCode">—</span>
+          <button class="btn btn-outline btn-sm" onclick="navigator.clipboard.writeText(document.getElementById('referralCode').textContent);showToast('Copied!')">Copy</button>
+        </div>
+      </div>
+
+      <div class="dash-section">
+        <h2>Order History</h2>
+        <div id="dashEmpty" class="cart-empty" style="display:none"><p>No orders yet.</p><a href="plans.html" class="btn btn-primary" style="margin-top:12px">Browse Plans</a></div>
+        <div id="dashOrders"></div>
+      </div>
+
+      <div class="dash-grid-2">
+        <div class="dash-section">
+          <h2>Edit Profile</h2>
+          <form class="profile-form" onsubmit="return handleProfile(event)">
+            <input type="text" id="profileName" placeholder="Name" required>
+            <input type="password" id="profilePass" placeholder="New password (leave blank to keep)">
+            <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
+            <p id="profileMsg" style="display:none;margin-top:10px;font-size:13px"></p>
+          </form>
+        </div>
+        <div class="dash-section">
+          <h2>Support Ticket</h2>
+          <form class="ticket-form" onsubmit="return handleTicket(event)">
+            <input type="text" id="ticketSubject" placeholder="Subject" required>
+            <textarea id="ticketMessage" placeholder="Describe your issue..." required></textarea>
+            <button type="submit" class="btn btn-primary btn-sm">Submit Ticket</button>
+          </form>
+          <div id="dashTickets" style="margin-top:16px"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-bottom"><div class="container"><p>© 2026 AetixCloud.</p></div></div>
+  </footer>
+  <script src="config.js"></script>
+  <script src="services.js"></script>
+  <script src="script.js"></script>
+  <script>
+    function handleProfile(e) {
+      e.preventDefault();
+      var res = updateProfile(document.getElementById('profileName').value.trim(), document.getElementById('profilePass').value);
+      var msg = document.getElementById('profileMsg');
+      msg.style.display = 'block';
+      msg.textContent = res.ok ? 'Profile updated!' : res.msg;
+      msg.style.color = res.ok ? 'var(--green)' : 'var(--danger)';
+      if (res.ok) renderDashboard();
+      return false;
+    }
+    function handleTicket(e) {
+      e.preventDefault();
+      var subject = document.getElementById('ticketSubject').value.trim();
+      var message = document.getElementById('ticketMessage').value.trim();
+      if (!subject || !message) return false;
+      createTicket(subject, message);
+      document.getElementById('ticketSubject').value = '';
+      document.getElementById('ticketMessage').value = '';
+      showToast('Ticket submitted!');
+      renderDashboard();
+      return false;
+    }
+  </script>
+</body>
+</html>

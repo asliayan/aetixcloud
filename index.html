@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AetixCloud — Premium Minecraft Hosting BD</title>
+  <meta name="description" content="Premium Minecraft server hosting in Bangladesh. Instant setup, DDoS protection, 99.9% uptime.">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛏</text></svg>">
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo"><span class="logo-icon">⛏</span><span class="logo-text">Aetix<span>Cloud</span></span></a>
+      <ul class="nav-links">
+        <li><a href="features.html" data-i18n="nav.features">Features</a></li>
+        <li><a href="plans.html" data-i18n="nav.plans">Plans</a></li>
+        <li><a href="status.html" data-i18n="nav.status">Status</a></li>
+        <li><a href="#faq" data-i18n="nav.faq">FAQ</a></li>
+        <li><a href="contact.html" data-i18n="nav.contact">Contact</a></li>
+        <li><a href="cart.html" data-i18n="nav.cart">Cart <span data-cart-count class="cart-badge">0</span></a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="lang-btn" id="langToggle" onclick="toggleLanguage()">বাংলা</button>
+        <button class="theme-btn" data-theme-btn onclick="toggleTheme()">☀️</button>
+        <a href="login.html" class="btn btn-outline btn-sm" data-auth="guest" data-i18n="nav.login">Login</a>
+        <a href="dashboard.html" class="btn btn-primary btn-sm" data-auth="user" style="display:none" data-i18n="nav.dashboard">Dashboard</a>
+        <button class="mobile-toggle" id="mobileToggle">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">⚡ Instant Setup · 99.9% Uptime · Bangladesh</div>
+      <h1>Premium <span class="accent">Minecraft</span><br>Server Hosting</h1>
+      <p class="hero-sub">Powerful VPS-based Minecraft servers with blazing fast performance, DDoS protection, and full control. Start your world in under 60 seconds.</p>
+      <div class="hero-cta">
+        <a href="plans.html" class="btn btn-primary btn-lg">View Plans</a>
+        <a href="contact.html" class="btn btn-outline btn-lg">Contact Us</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><span class="num">500+</span><span class="label">Active Servers</span></div>
+        <div class="hero-stat"><span class="num">99.9%</span><span class="label">Uptime</span></div>
+        <div class="hero-stat"><span class="num">24/7</span><span class="label">Support</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <h2>Why AetixCloud?</h2>
+        <p>Built for Bangladeshi players — low latency, fair pricing, real support.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🚀</div>
+          <h3>Instant Setup</h3>
+          <p>Your server is ready in under 60 seconds after payment confirmation.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🛡️</div>
+          <h3>DDoS Protection</h3>
+          <p>Enterprise-grade protection keeps your world online during attacks.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💾</div>
+          <h3>NVMe Storage</h3>
+          <p>Ultra-fast SSD storage for quick chunk loading and smooth gameplay.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎮</div>
+          <h3>Full Control Panel</h3>
+          <p>Pterodactyl panel — install mods, plugins, backups with one click.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🇧🇩</div>
+          <h3>BD Friendly</h3>
+          <p>bKash, Nagad, Rocket payments. Local support via Discord.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📦</div>
+          <h3>Auto Backups</h3>
+          <p>Daily/hourly backups so you never lose your world progress.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <h2>FAQ</h2>
+        <p>Common questions answered</p>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question">How fast is setup after payment?</button>
+          <div class="faq-answer">Usually under 60 minutes after we verify your TxID. Often much faster during active hours.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Which payment methods do you accept?</button>
+          <div class="faq-answer">bKash, Nagad, and Rocket (Send Money). Auto bKash checkout available when backend is configured.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Can I install mods and plugins?</button>
+          <div class="faq-answer">Yes. Full Pterodactyl panel access — Paper, Purpur, Forge, Fabric, plugins, mods, everything.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">Is there a refund policy?</button>
+          <div class="faq-answer">Contact us on Discord within 24 hours if the server wasn't delivered. We'll help resolve any issue.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" style="text-align:center">
+    <div class="container">
+      <h2 style="font-size:28px;font-weight:800;margin-bottom:12px">Ready to start?</h2>
+      <p style="color:var(--text-muted);margin-bottom:24px">Pick a plan and get your server online today.</p>
+      <a href="plans.html" class="btn btn-primary btn-lg">Browse Plans</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <div class="logo"><span class="logo-icon">⛏</span><span class="logo-text">Aetix<span>Cloud</span></span></div>
+        <p>Premium Minecraft hosting for Bangladesh.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Links</h4>
+        <a href="plans.html">Plans</a>
+        <a href="features.html">Features</a>
+        <a href="status.html">Status</a>
+        <a href="cart.html">Cart</a>
+      </div>
+      <div class="footer-links">
+        <h4>Support</h4>
+        <a href="contact.html">Discord</a>
+        <a href="login.html">Login</a>
+        <a href="admin.html">Admin</a>
+      </div>
+    </div>
+    <div class="footer-bottom"><div class="container"><p>© 2026 AetixCloud. All rights reserved.</p></div></div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="services.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

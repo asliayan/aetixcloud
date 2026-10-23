@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plans — AetixCloud</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛏</text></svg>">
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo"><span class="logo-icon">⛏</span><span class="logo-text">Aetix<span>Cloud</span></span></a>
+      <ul class="nav-links">
+        <li><a href="features.html">Features</a></li>
+        <li><a href="plans.html" class="active">Plans</a></li>
+        <li><a href="status.html">Status</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="cart.html">Cart <span data-cart-count class="cart-badge">0</span></a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="theme-btn" data-theme-btn onclick="toggleTheme()">☀️</button>
+        <a href="login.html" class="btn btn-outline btn-sm" data-auth="guest">Login</a>
+        <a href="dashboard.html" class="btn btn-primary btn-sm" data-auth="user" style="display:none">Dashboard</a>
+        <button class="mobile-toggle" id="mobileToggle">☰</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <div class="container">
+      <h1>Server Plans</h1>
+      <p>Choose the perfect plan for your community</p>
+    </div>
+  </div>
+
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="plans-grid">
+        <div class="plan-card">
+          <div class="plan-name">Starter</div>
+          <div class="plan-price">৳299<span>/mo</span></div>
+          <div class="plan-desc">For small groups of friends</div>
+          <ul class="plan-features">
+            <li><span class="check">✓</span> 1 GB RAM</li>
+            <li><span class="check">✓</span> 10 GB NVMe</li>
+            <li><span class="check">✓</span> 100% CPU</li>
+            <li><span class="check">✓</span> 1 Backup</li>
+            <li><span class="check">✓</span> DDoS Protection</li>
+          </ul>
+          <button class="btn btn-outline plan-btn" onclick="showPlanDetail('Starter')">View / Add</button>
+        </div>
+        <div class="plan-card">
+          <div class="plan-name">Basic</div>
+          <div class="plan-price">৳399<span>/mo</span></div>
+          <div class="plan-desc">Growing servers</div>
+          <ul class="plan-features">
+            <li><span class="check">✓</span> 2 GB RAM</li>
+            <li><span class="check">✓</span> 15 GB NVMe</li>
+            <li><span class="check">✓</span> 100% CPU</li>
+            <li><span class="check">✓</span> 1 Backup</li>
+            <li><span class="check">✓</span> DDoS Protection</li>
+          </ul>
+          <button class="btn btn-outline plan-btn" onclick="showPlanDetail('Basic')">View / Add</button>
+        </div>
+        <div class="plan-card popular">
+          <span class="plan-badge">Popular</span>
+          <div class="plan-name">Pro</div>
+          <div class="plan-price">৳599<span>/mo</span></div>
+          <div class="plan-desc">Best value for most players</div>
+          <ul class="plan-features">
+            <li><span class="check">✓</span> 4 GB RAM</li>
+            <li><span class="check">✓</span> 30 GB NVMe</li>
+            <li><span class="check">✓</span> 100% CPU</li>
+            <li><span class="check">✓</span> Daily Backups</li>
+            <li><span class="check">✓</span> DDoS Protection</li>
+          </ul>
+          <button class="btn btn-primary plan-btn" onclick="showPlanDetail('Pro')">View / Add</button>
+        </div>
+        <div class="plan-card">
+          <div class="plan-name">Plus</div>
+          <div class="plan-price">৳799<span>/mo</span></div>
+          <div class="plan-desc">More power for mods</div>
+          <ul class="plan-features">
+            <li><span class="check">✓</span> 6 GB RAM</li>
+            <li><span class="check">✓</span> 45 GB NVMe</li>
+            <li><span class="check">✓</span> 150% CPU</li>
+            <li><span class="check">✓</span> Daily Backups</li>
+            <li><span class="check">✓</span> DDoS Protection</li>
+          </ul>
+          <button class="btn btn-outline plan-btn" onclick="showPlanDetail('Plus')">View / Add</button>
+        </div>
+        <div class="plan-card">
+          <div class="plan-name">Premium</div>
+          <div class="plan-price">৳999<span>/mo</span></div>
+          <div class="plan-desc">Serious communities</div>
+          <ul class="plan-features">
+            <li><span class="check">✓</span> 8 GB RAM</li>
+            <li><span class="check">✓</span> 60 GB NVMe</li>
+            <li><span class="check">✓</span> 200% CPU</li>
+            <li><span class="check">✓</span> Daily Backups</li>
+            <li><span class="check">✓</span> Advanced DDoS</li>
+          </ul>
+          <button class="btn btn-outline plan-btn" onclick="showPlanDetail('Premium')">View / Add</button>
+        </div>
+        <div class="plan-card">
+          <div class="plan-name">Elite</div>
+          <div class="plan-price">৳1299<span>/mo</span></div>
+          <div class="plan-desc">Large modpacks</div>
+          <ul class="plan-features">
+            <li><span class="check">✓</span> 12 GB RAM</li>
+            <li><span class="check">✓</span> 90 GB NVMe</li>
+            <li><span class="check">✓</span> 250% CPU</li>
+            <li><span class="check">✓</span> Daily Backups</li>
+            <li><span class="check">✓</span> Advanced DDoS</li>
+          </ul>
+          <button class="btn btn-outline plan-btn" onclick="showPlanDetail('Elite')">View / Add</button>
+        </div>
+        <div class="plan-card">
+          <div class="plan-name">Ultimate</div>
+          <div class="plan-price">৳1799<span>/mo</span></div>
+          <div class="plan-desc">Heavy networks</div>
+          <ul class="plan-features">
+            <li><span class="check">✓</span> 16 GB RAM</li>
+            <li><span class="check">✓</span> 120 GB NVMe</li>
+            <li><span class="check">✓</span> 300% CPU</li>
+            <li><span class="check">✓</span> Hourly Backups</li>
+            <li><span class="check">✓</span> Advanced DDoS</li>
+          </ul>
+          <button class="btn btn-outline plan-btn" onclick="showPlanDetail('Ultimate')">View / Add</button>
+        </div>
+        <div class="plan-card">
+          <div class="plan-name">Extreme</div>
+          <div class="plan-price">৳2999<span>/mo</span></div>
+          <div class="plan-desc">Maximum performance</div>
+          <ul class="plan-features">
+            <li><span class="check">✓</span> 32 GB RAM</li>
+            <li><span class="check">✓</span> 200 GB NVMe</li>
+            <li><span class="check">✓</span> 400% CPU</li>
+            <li><span class="check">✓</span> Hourly Backups</li>
+            <li><span class="check">✓</span> Advanced DDoS</li>
+          </ul>
+          <button class="btn btn-outline plan-btn" onclick="showPlanDetail('Extreme')">View / Add</button>
+        </div>
+      </div>
+
+      <div class="compare-wrap">
+        <table class="compare-table">
+          <thead>
+            <tr><th>Feature</th><th>Starter</th><th>Basic</th><th>Pro</th><th>Plus</th><th>Premium</th><th>Elite</th><th>Ultimate</th><th>Extreme</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>RAM</td><td>1 GB</td><td>2 GB</td><td>4 GB</td><td>6 GB</td><td>8 GB</td><td>12 GB</td><td>16 GB</td><td>32 GB</td></tr>
+            <tr><td>Storage</td><td>10 GB</td><td>15 GB</td><td>30 GB</td><td>45 GB</td><td>60 GB</td><td>90 GB</td><td>120 GB</td><td>200 GB</td></tr>
+            <tr><td>CPU</td><td>100%</td><td>100%</td><td>100%</td><td>150%</td><td>200%</td><td>250%</td><td>300%</td><td>400%</td></tr>
+            <tr><td>Backup</td><td>1</td><td>1</td><td>Daily</td><td>Daily</td><td>Daily</td><td>Daily</td><td>Hourly</td><td>Hourly</td></tr>
+            <tr><td>Price</td><td>৳299</td><td>৳399</td><td>৳599</td><td>৳799</td><td>৳999</td><td>৳1299</td><td>৳1799</td><td>৳2999</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand"><div class="logo"><span class="logo-icon">⛏</span><span class="logo-text">Aetix<span>Cloud</span></span></div><p>Premium Minecraft Hosting.</p></div>
+      <div class="footer-links"><h4>Links</h4><a href="plans.html">Plans</a><a href="cart.html">Cart</a><a href="contact.html">Contact</a></div>
+      <div class="footer-links"><h4>Support</h4><a href="contact.html">Discord</a></div>
+    </div>
+    <div class="footer-bottom"><div class="container"><p>© 2026 AetixCloud.</p></div></div>
+  </footer>
+  <script src="config.js"></script>
+  <script src="services.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
