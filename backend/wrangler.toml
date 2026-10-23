@@ -1,0 +1,15 @@
+name = "aetixcloud-api"
+main = "worker.js"
+compatibility_date = "2024-09-01"
+
+# Secrets set via: wrangler secret put SECRET_NAME
+# BKASH_APP_KEY, BKASH_APP_SECRET, BKASH_USERNAME, BKASH_PASSWORD
+# BKASH_BASE_URL (sandbox: https://tokenized.sandbox.bka.sh/v1.2.0-beta)
+# PTERO_PANEL_URL, PTERO_API_KEY
+# ADMIN_API_KEY (for admin routes)
+# DISCORD_WEBHOOK (optional)
+
+[vars]
+# Non-secret defaults
+BKASH_SANDBOX = "true"
+FRONTEND_URL = "https://your-site.netlify.app"
